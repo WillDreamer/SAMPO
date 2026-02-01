@@ -1,0 +1,93 @@
+hydra:
+  searchpath:
+    - file://verl/trainer/config
+
+defaults:
+  - ppo_trainer
+  - _self_
+
+data:
+  val_sample_size: null
+  apply_chat_template: True
+  filter_overlong_prompts: True
+  max_start_length: 4096
+  max_obs_length: 256
+  prompt: |
+    Solve the following problem step by step. You now have the ability to selectively write executable Python code to enhance your reasoning process. The Python code will be executed by an external sandbox, and the output (after "Code execution result: ") is returned to aid your reasoning and help you arrive at the final answer. The Python code should be complete scripts, including necessary imports.
+
+    Code Format:
+    Each code snippet is wrapped between ```. You need to use `print()` to output intermediate results.
+
+    Answer Format:
+    You can use the `final_answer()` function in the code to return your final answer. For example, to answer the User Question: What is the result of the 5 + 3 + 1294.678?, you can write:
+    ```py
+    answer = 5 + 3 + 1294.678
+    final_answer(answer)
+    ```
+
+    You can also use \boxed to return your answer. The last part of your response should be:
+    \boxed{'The final answer goes here.'}
+
+    User Question:
+
+actor_rollout_ref:
+  actor:
+    optim:
+      lr: 1e-6
+    use_dynamic_bsz: True
+    use_kl_loss: False
+    kl_loss_coef: 0.0
+    kl_loss_type: low_var_kl
+    kl_loss_update: False
+    entropy_coeff: 0.0
+    clip_ratio_high: 0.28
+    clip_ratio_low: 0.2
+    clip_ratio_c: 3.0
+  model:
+    use_remove_padding: True
+  rollout:
+    name: vllm
+    mode: sync # sync: LLM, async: AsyncLLM
+    temperature: 1.0
+    disable_log_stats: False
+    enforce_eager: False
+    free_cache_engine: False
+    n: 1
+    val_kwargs:
+      # sampling parameters for validation
+      top_k: -1 # 0 for hf rollout, -1 for vllm rollout
+      top_p: 0.7
+      temperature: 1.0
+      n: 4
+      do_sample: True # default eager for validation
+
+trainer:
+  rejection_sample: True
+  oversample_multiplier: 2.0 # Multiple the training batch size by this factor to account for rejection sampling reduction.
+  remove_clip: False # remove overlong response if True
+  acc_filter: False # if True, only keep prompts with avg acc ratio in thresholds
+  acc_filter_high: 1
+  acc_filter_low: 0
+  start_clip_step: 50
+  critic_warmup: 0
+  logger: ['console','wandb']
+  project_name: math_agent
+  experiment_name: math_agent_math
+
+critic:
+  ppo_micro_batch_size_per_gpu: 4
+
+reward_model:
+  reward_manager: math
+
+agent:
+  tool_use: True
+  max_turns: 5
+  append_final_answer_func: False
+
+algorithm:
+  use_kl_in_reward: False
+  kl_ctrl:
+    kl_coef: 0.0
+  # Advantage estimator: use "aepo" for AEPO, "gspo" for GSPO, "grpo" for standard GRPO, etc.
+  adv_estimator: grpo

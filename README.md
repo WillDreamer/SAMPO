@@ -9,9 +9,10 @@
 <h1 style="text-align: center;"> 🤖 Agentic RL Arena </h1>
 
 
+<!-- <p align="center"><img src="public/ARL.png" width="800px" alt="Agentic RL Arena Framework" /></p>
 <p align="center" style="font-size: 16px; max-width: 800px; margin: 0 auto;">
 Figure 1: Overview of our framework
-</p>
+</p> -->
 
 ## Our Framework Design
 
@@ -36,9 +37,6 @@ Figure 1: Overview of our framework
 
 - [ ] Cross-domain agentic reasoning
 - [ ] Multiple tool integration reasoning
-- [ ] Gap between $\pi_{\theta_{vLLM}}$ and $\pi_{\theta_{FSDP}}$
-- [ ] Turn-level rollout compactness
-- [ ] Rollout analysis
 
 ## 💡 Getting Started
 
