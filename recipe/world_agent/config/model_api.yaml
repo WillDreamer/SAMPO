@@ -1,0 +1,39 @@
+# recipe/world_agent/config/model_api.yaml
+model_config:
+  model_name: gpt-4o-mini        # 默认用的 API 模型，可在命令行覆盖
+  max_concurrency: 10             # 同时发起的请求数
+  eval_system_prompt: "You are an expert AI agent operating in the ALFRED Embodied Environment. Your task is to analyze the current state, reason step-by-step about available actions, and select the most appropriate action to accomplish the given task. Be precise and thorough in your reasoning."
+
+model_info:
+  gpt-4o-mini:
+    provider_name: openai         # 使用 OpenAI provider
+    model_name: gpt-4o-mini
+    generation_kwargs:
+      temperature: 0.7
+      max_tokens: 512
+      top_p: 0.9
+  
+  gpt-4o:
+    provider_name: openai
+    model_name: gpt-4o
+    generation_kwargs:
+      temperature: 0.7
+      max_tokens: 512
+      top_p: 0.9
+
+  gemini-2.5-pro:
+    provider_name: gemini
+    model_name: gemini-2.5-pro
+    generation_kwargs:
+      temperature: 0.7
+      max_tokens: 16384
+      top_p: 0.9
+  
+  gpt-5.2:
+    provider_name: openai
+    model_name: gpt-5.2    # 根据实际 API 调整
+    generation_kwargs:
+      temperature: 0.7
+      max_completion_tokens: 16384
+      top_p: 0.9
+

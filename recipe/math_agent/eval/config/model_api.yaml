@@ -1,0 +1,70 @@
+model_config:
+  model_name: gpt-4o-mini
+  max_concurrency: 20
+  eval_system_prompt: |
+    You are an expert mathematical problem solver. Analyze the problem carefully and use Python code when needed to compute solutions. Always provide your final answer in \boxed{} format.
+
+model_info:
+  gpt-4o-mini:
+    provider_name: openai
+    model_name: gpt-4o-mini
+    generation_kwargs:
+      temperature: 0.6
+      max_tokens: 2048
+      top_p: 0.9
+
+  gpt-4o:
+    provider_name: openai
+    model_name: gpt-4o
+    generation_kwargs:
+      temperature: 0.6
+      max_tokens: 2048
+      top_p: 0.9
+
+  claude-3-5-sonnet:
+    provider_name: anthropic
+    model_name: claude-3-5-sonnet-20241022
+    generation_kwargs:
+      temperature: 0.6
+      max_tokens: 2048
+      top_p: 0.9
+
+  deepseek-chat:
+    provider_name: deepseek
+    model_name: deepseek-chat
+    generation_kwargs:
+      temperature: 0.6
+      max_tokens: 2048
+      top_p: 0.9
+
+  gpt-5-mini:
+    provider_name: openai
+    model_name: gpt-5-mini
+    generation_kwargs:
+      temperature: 1
+      max_completion_tokens: 16384
+      top_p: 0.9
+  
+  gpt-5.2:
+    provider_name: openai
+    model_name: gpt-5.2    # 根据实际 API 调整
+    generation_kwargs:
+      temperature: 1
+      max_completion_tokens: 16384
+      top_p: 0.9
+
+  gemini-2.5-pro:
+    provider_name: gemini
+    model_name: gemini-2.5-pro
+    generation_kwargs:
+      temperature: 0.6
+      max_tokens: 16384
+      top_p: 0.9
+
+  gemini-2.5-pro-exp:
+    provider_name: gemini
+    model_name: gemini-2.5-pro-exp-03-25
+    generation_kwargs:
+      temperature: 0.6
+      max_tokens: 16384
+      top_p: 0.9

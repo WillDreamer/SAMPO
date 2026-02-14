@@ -1,0 +1,67 @@
+hydra:
+  searchpath:
+    - file://verl/trainer/config
+
+defaults:
+  - _self_
+  - model_api
+
+# Data configuration
+data:
+  train_files: ${oc.env:HOME}/data/math/train.parquet
+  val_files: ${oc.env:HOME}/data/math/test.parquet
+  prompt_key: prompt
+  reward_fn_key: data_source
+  max_prompt_length: 4096
+  max_response_length: 2048
+  max_obs_length: 512
+  max_start_length: 4096
+  train_batch_size: 16
+  val_batch_size: 16
+  return_raw_chat: True
+  apply_chat_template: True
+  filter_overlong_prompts: True
+  truncation: error
+  shuffle: False
+  seed: 42
+  prompt: |
+    Solve the following problem step by step. You can write Python code to help your reasoning.
+
+    Code Format: Wrap code in ```. Use print() for output.
+    Answer Format: Use \boxed{answer} or final_answer(result) function.
+
+    User Question:
+
+# Agent configuration
+agent:
+  tool_use: True
+  max_turns: 5
+  append_final_answer_func: True
+  sandbox_run_timeout: 3.0
+  mask_void_turns: False
+
+# Actor/Rollout configuration (placeholder for API)
+actor_rollout_ref:
+  model:
+    path: gpt-4o  # Overridden by model_api.yaml
+  rollout:
+    name: api
+    response_length: 2048
+    val_kwargs:
+      temperature: 0.6
+      top_p: 0.9
+      n: 4  # For pass@k
+      do_sample: True
+
+# Reward model
+reward_model:
+  reward_manager: math  # or math_exec, code
+  timeout_seconds: 5
+
+# Evaluation settings
+evaluation:
+  max_steps: 5
+  save_trajectories: True
+  output_dir: outputs_math_agent/eval_results
+  compute_pass_at_k: True
+  pass_at_k_values: [1, 4]
